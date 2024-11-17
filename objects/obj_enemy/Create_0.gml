@@ -1,7 +1,9 @@
 vision = 100;
 rot = 0
-max_hp = 10;
+max_hp = 20;
 hp = max_hp;
+
+damage = 2;
 
 atk_time = 0;
 atk_timing = 0;
@@ -41,6 +43,10 @@ state_conditions = function(){
 			can_change_state = false;
 		}
 		
+	}
+	
+	if(hp <= 0){
+		instance_destroy()
 	}
 	
 }
@@ -125,6 +131,7 @@ aiming = function(){
 			var _dir = point_direction(x, y, obj_player.x, obj_player.y);
 			_shot.direction = _dir;
 			_shot.speed = 4;
+			_shot.damage = damage;
 			can_atk = false;
 		}
 	}
@@ -152,5 +159,7 @@ enemy_debug = function(){
 	}
 
 }
+
+
 
 state = state_stopped;

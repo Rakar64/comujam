@@ -1,0 +1,1 @@
+part_system_clear(ball_smoke)

@@ -2,6 +2,12 @@ velocity = 0;
 accuracy = 4;
 cannon_balls = 3;
 
+max_hp = 50
+hp = max_hp
+
+invencible = false
+invencible_timer = 0
+
 charge_time = 0;
 
 can_shot = false;
@@ -9,6 +15,8 @@ can_shot = false;
 player_range = 30;
 
 damage = 2;
+
+timed = 0
 
 player_movements = function(){
 	var _accel, _right, _left, _dir;
@@ -46,7 +54,7 @@ cannon_shot = function(){
 		var _x = x;
 		var _y = y;
 		
-		var _shot_accu = 2 * random_range(-accuracy, accuracy)
+		var _shot_accu = 4 * random_range(-accuracy, accuracy)
 		
 		var _shot = instance_create_layer(_x, _y, "balls", obj_canon_shot);
 		_shot.speed = 5;
@@ -103,4 +111,73 @@ canon_atk = function(){
 		cannon_shot();
 	}
 	
+}
+
+take_damage = function(){
+	var _ball_touch = instance_place(x,y,obj_enemy_ball)
+	var _enemy_touch = instance_place(x,y,obj_enemy)
+	
+	if(invencible == false){
+		
+		if(_enemy_touch){
+			hp -= _enemy_touch.damage
+			_enemy_touch.hp -= damage
+		}
+		if(_ball_touch){
+			hp -= _ball_touch.damage
+			instance_destroy(_ball_touch)
+		}
+	
+	
+		if(_ball_touch or _enemy_touch){
+			invencible = true;
+			invencible_timer = 160;
+			global.shake_length = 20
+			global.shake_time = 0.2
+			var _part = part_system_create(ps_ball_impact)
+			part_system_position(_part, x, y)
+		}
+	}
+}
+
+invencibility_system = function(){
+	
+	//se o timer de invencibilidade gor menor ou igual a zero a invencibilidade está desativada
+	if (invencible_timer <= 0){
+		invencible = false
+		
+		//setando o alpha da imagem para o valor original quando deixar de ficar invencivel
+		image_alpha = 1;
+		
+	}else{
+		//reduzindo o timer SOMENTE quando for maior que zero
+		invencible_timer --;
+		invencible = true;
+		
+		//Aumentando o valor do alpha pra cair na condicional
+		image_alpha += 0.05;
+		
+			//fazendo o player piscar quando toma dano
+			if (image_alpha < 0 or image_alpha > 1){
+				image_alpha *= -1;
+			}
+	}
+}
+
+wiggle_effect = function(){
+	var _frequency = 0.1;
+	var _amplitude = 0.1;
+	
+	image_xscale = 1 + cos(timed*_frequency)*_amplitude;
+	image_yscale = 1 + sin(timed*_frequency)*_amplitude;
+	timed++;
+}
+
+player_debug = function(){
+	if(global.debug){
+		draw_text(x, y - 20, "HP: " + string(hp))
+	
+	
+	}
+
 }
