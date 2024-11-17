@@ -1,12 +1,9 @@
 {
   "$GMObject":"",
-  "%Name":"obj_control",
-  "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-  ],
+  "%Name":"obj_enemy_ball",
+  "eventList":[],
   "managed":true,
-  "name":"obj_control",
+  "name":"obj_enemy_ball",
   "overriddenProperties":[],
   "parent":{
     "name":"Objects",
@@ -30,7 +27,10 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":null,
+  "spriteId":{
+    "name":"spr_enemy_ball",
+    "path":"sprites/spr_enemy_ball/spr_enemy_ball.yy",
+  },
   "spriteMaskId":null,
   "visible":true,
 }
