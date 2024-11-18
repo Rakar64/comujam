@@ -1,1 +1,1 @@
-player_life_draw();
+player_info_draw();

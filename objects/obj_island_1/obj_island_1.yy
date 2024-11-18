@@ -1,7 +1,9 @@
 {
   "$GMObject":"",
   "%Name":"obj_island_1",
-  "eventList":[],
+  "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
   "managed":true,
   "name":"obj_island_1",
   "overriddenProperties":[],
@@ -9,7 +11,10 @@
     "name":"Objects",
     "path":"folders/Objects.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"obj_island_par",
+    "path":"objects/obj_island_par/obj_island_par.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
@@ -26,8 +31,11 @@
   "properties":[],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
-  "solid":false,
-  "spriteId":null,
+  "solid":true,
+  "spriteId":{
+    "name":"spr_island_1",
+    "path":"sprites/spr_island_1/spr_island_1.yy",
+  },
   "spriteMaskId":null,
   "visible":true,
 }

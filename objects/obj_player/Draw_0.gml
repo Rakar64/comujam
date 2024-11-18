@@ -1,4 +1,4 @@
 draw_self();
-
-canon_atk()
-player_debug()
+map_interaction();
+canon_atk();
+player_debug();

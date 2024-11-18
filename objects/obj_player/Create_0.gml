@@ -1,9 +1,10 @@
 velocity = 0;
+max_velocity = 2
 accuracy = 4;
 cannon_balls = 3;
 
-max_hp = 50
-hp = max_hp
+max_hp = 6;
+hp = max_hp;
 
 invencible = false
 invencible_timer = 0
@@ -26,12 +27,12 @@ player_movements = function(){
 	_left = keyboard_check(ord("A"));
 	
 	if(_accel){
-		velocity = lerp(velocity, 2, 0.05);
+		velocity = lerp(velocity, max_velocity, 0.05);
 		speed = velocity;
 		var _ship_part = part_system_create(ps_ship_feedback);
 		part_system_position(_ship_part, x, y);
 		part_system_angle(_ship_part, direction - 90);
-		part_system_depth(_ship_part, 100)
+		part_system_depth(_ship_part, 200)
 	}else{
 		velocity = lerp(velocity, 0, 0.05);
 		speed = velocity;
@@ -115,7 +116,8 @@ canon_atk = function(){
 
 take_damage = function(){
 	var _ball_touch = instance_place(x,y,obj_enemy_ball)
-	var _enemy_touch = instance_place(x,y,obj_enemy)
+	var _enemy_touch = instance_place(x,y,obj_enemy_par)
+	var _shark_touch = instance_place(x,y, obj_enemy_shark)
 	
 	if(invencible == false){
 		
@@ -127,9 +129,12 @@ take_damage = function(){
 			hp -= _ball_touch.damage
 			instance_destroy(_ball_touch)
 		}
+		if(_shark_touch){
+			hp -= _shark_touch.damage
+		}
 	
 	
-		if(_ball_touch or _enemy_touch){
+		if(_ball_touch or _enemy_touch or _shark_touch){
 			invencible = true;
 			invencible_timer = 160;
 			global.shake_length = 20
@@ -137,6 +142,33 @@ take_damage = function(){
 			var _part = part_system_create(ps_ball_impact)
 			part_system_position(_part, x, y)
 		}
+	}
+	
+	if(hp <= 0){
+		global.gameover = true;
+	}
+}
+
+player_limits = function(){
+	if(x <= -20){
+		x += 50
+		invencible = true
+		invencible_timer = 60
+	}
+	if(x >= room_width + 20){
+		x -= 50
+		invencible = true
+		invencible_timer = 60
+	}
+	if(y <= -20){
+		y += 50
+		invencible = true
+		invencible_timer = 60		
+	}
+	if(y >= room_height + 20){
+		y -= 50
+		invencible = true
+		invencible_timer = 60
 	}
 }
 
@@ -171,6 +203,42 @@ wiggle_effect = function(){
 	image_xscale = 1 + cos(timed*_frequency)*_amplitude;
 	image_yscale = 1 + sin(timed*_frequency)*_amplitude;
 	timed++;
+}
+
+map_interaction = function(){
+	draw_set_font(fnt_game)
+	if(distance_to_object(obj_city) <= 20){
+		draw_rectangle_color(x + 24, y, x + 100, y + 15, c_black, c_black, c_black, c_black, false);
+		draw_text(x + 25, y, "[E] Comprar")
+		
+		if(keyboard_check_pressed(ord("E"))){
+			global.shop = true;
+			
+		}
+	}
+	
+	if(distance_to_object(obj_island_par) <= 20 and global.shovel){
+		draw_rectangle_color(x + 24, y, x + 180, y + 15, c_black, c_black, c_black, c_black, false);
+		draw_text(x + 25, y, "[E] Cavar Tesouro");
+		
+		if(keyboard_check_pressed(ord("E"))){
+			global.shovel = false
+			var _island = instance_nearest(x,y, obj_island_par)
+			
+			if(_island.code == global.bottle_map.code){
+				global.discover_points += 1
+				var _msg = instance_create_layer(0,0, "balls", obj_text)
+				_msg.msg = "Você descobriu um tesouro"
+				global.bottle_map = false;
+			}else{
+				var _msg = instance_create_layer(0,0, "balls", obj_text)
+				_msg.msg = "Não encontrou nada :("
+			}
+		}
+	}
+	
+	draw_set_font(-1)
+
 }
 
 player_debug = function(){

@@ -47,6 +47,7 @@ state_conditions = function(){
 	
 	if(hp <= 0){
 		instance_destroy()
+		global.coins += 2;
 	}
 	
 }
@@ -102,7 +103,6 @@ state_atk_player = function(){
 		speed = 0;
 	}
 	
-	show_debug_message(direction)
 }
 
 aiming = function(){
